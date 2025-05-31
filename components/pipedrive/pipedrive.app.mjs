@@ -45,7 +45,7 @@ export default {
             value: id,
           })),
           context: {
-            cursor: additionalData.next_cursor,
+            cursor: additionalData.next_cursor || false,
           },
         };
       },
@@ -146,7 +146,7 @@ export default {
             value: id,
           })),
           context: {
-            cursor: additionalData.next_cursor,
+            cursor: additionalData.next_cursor || false,
           },
         };
       },
@@ -213,7 +213,7 @@ export default {
             value: id,
           })),
           context: {
-            cursor: additionalData.next_cursor,
+            cursor: additionalData.next_cursor || false,
           },
         };
       },
@@ -278,6 +278,34 @@ export default {
         };
       },
     },
+    leadLabelIds: {
+      type: "string[]",
+      label: "Lead Label IDs",
+      description: "The IDs of the lead labels to associate with the lead",
+      optional: true,
+      async options() {
+        const { data: leadLabels } = await this.getLeadLabels();
+
+        return leadLabels?.map(({
+          id, name,
+        }) => ({
+          label: name,
+          value: id,
+        }));
+      },
+    },
+    emails: {
+      type: "string[]",
+      label: "Emails",
+      description: "Email addresses (one or more) associated with the person, presented in the same manner as received by GET request of a person. **Example: {\"value\":\"email1@email.com\", \"primary\":true, \"label\":\"work\"}**",
+      optional: true,
+    },
+    phones: {
+      type: "string[]",
+      label: "Phones",
+      description: "Phone numbers (one or more) associated with the person, presented in the same manner as received by GET request of a person. **Example: {\"value\":\"12345\", \"primary\":true, \"label\":\"work\"}**",
+      optional: true,
+    },
   },
   methods: {
     api(model, version = "v1") {
@@ -323,6 +351,10 @@ export default {
       const stagesApi = this.api("StagesApi", "v2");
       return stagesApi.getStages(opts);
     },
+    getLeadLabels(opts) {
+      const leadLabelsApi = this.api("LeadLabelsApi");
+      return leadLabelsApi.getLeadLabels(opts);
+    },
     addActivity(opts = {}) {
       const activityApi = this.api("ActivitiesApi", "v2");
       return activityApi.addActivity({
@@ -353,6 +385,12 @@ export default {
         AddPersonRequest: opts,
       });
     },
+    addLead(opts = {}) {
+      const leadApi = this.api("LeadsApi");
+      return leadApi.addLead({
+        AddLeadRequest: opts,
+      });
+    },
     addWebhook(opts = {}) {
       const webhooksApi = this.api("WebhooksApi");
       return webhooksApi.addWebhook({
@@ -376,6 +414,15 @@ export default {
       return dealsApi.updateDeal({
         id: dealId,
         UpdateDealRequest: opts,
+      });
+    },
+    updatePerson({
+      personId, ...opts
+    }) {
+      const personsApi = this.api("PersonsApi", "v2");
+      return personsApi.updatePerson({
+        id: personId,
+        UpdatePersonRequest: opts,
       });
     },
   },
