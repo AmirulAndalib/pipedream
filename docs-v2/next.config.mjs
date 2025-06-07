@@ -297,6 +297,11 @@ export default withNextra({
         permanent: true,
       },
       {
+        source: "/workflows/settings/",
+        destination: "/workflows/building-workflows/settings/",
+        permanent: true,
+      },
+      {
         source: "/code/",
         destination: "/workflows/building-workflows/code/",
         permanent: true,
@@ -577,6 +582,14 @@ export default withNextra({
         destination: "/api/demo-connect/accounts/:id",
       },
       {
+        source: "/api-demo-connect/apps",
+        destination: "/api/demo-connect/apps",
+      },
+      {
+        source: "/api-demo-connect/apps/",
+        destination: "/api/demo-connect/apps",
+      },
+      {
         source: "/workflows/errors/",
         destination: "/workflows/building-workflows/errors/",
       },
@@ -607,7 +620,7 @@ export default withNextra({
     TMP_SIZE_LIMIT: "2GB",
     DELAY_MIN_MAX_TIME:
       "You can pause your workflow for as little as one millisecond, or as long as one year",
-    PUBLIC_APPS: "2,500",
+    PUBLIC_APPS: "2,700",
     REGISTRY_ACTIONS: "5,300",
     REGISTRY_SOURCES: "2,500",
     REGISTRY_COMPONENTS: "8,000",
